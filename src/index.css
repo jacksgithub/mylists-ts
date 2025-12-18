@@ -27,11 +27,8 @@ a:hover {
 body {
 	margin: 0;
 	padding: 2%;
-	background: linear-gradient(
-		135deg,
-		rgba(255, 255, 255, 1) 0%,
-		rgba(255, 255, 255, 0.5) 40%,
-		rgba(25, 118, 210, 0.2) 100%
+	background: oklch(
+		from var(--primary-color) clamp(0, l + 0.15, 0.8) calc(c * 0.5) h
 	);
 	min-height: 100vh;
 	/* display: flex;
@@ -67,6 +64,9 @@ button:focus-visible {
 	:root {
 		color: #213547;
 		background-color: #ffffff;
+	}
+	body {
+		background: #fff;
 	}
 	a:hover {
 		color: #747bff;

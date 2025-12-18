@@ -6,7 +6,7 @@
  * App -> lists, Current list -> List item
  * listName must be unique
  */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import List from './components/List';
 import ListAddForm from './components/ListAddForm';
 import IList from './models/IList';
@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 // CSS
 import './App.css';
+import AlertDialog from './components/AlertDialog';
 
 function App() {
 	// State
@@ -24,20 +25,29 @@ function App() {
 	);
 	const [currList, setCurrList] = useState<IList>({ listName: '', items: [] });
 	const [listAddError, setListAddError] = useState('');
+	const [confirmListDelete, setConfirmListDelete] = useState(false);
 
 	// Set current list displayed
 	const changeCurrList = (listName: string) => {
 		const list = lists.filter((list) => list.listName === listName)[0];
 		setCurrList(list);
 	};
+
 	// Delete current list
-	const deleteCurrList = () => {
-		const updatedLists = lists.filter(
-			(list) => currList?.listName !== list.listName
-		);
-		setLists(updatedLists);
-		setCurrList({ listName: '', items: [] });
+	const deleteListConfirmation = () => {
+		setConfirmListDelete(true);
 	};
+	const deleteList = (confirmation: boolean) => {
+		if (confirmation) {
+			const updatedLists = lists.filter(
+				(list) => currList?.listName !== list.listName
+			);
+			setLists(updatedLists);
+			setCurrList({ listName: '', items: [] });
+		}
+		setConfirmListDelete(false);
+	};
+
 	// Add new list & set as current list
 	const addList = (name: string) => {
 		// Error checking
@@ -108,11 +118,17 @@ function App() {
 						<List
 							list={currList}
 							updateLists={updateLists}
-							deleteCurrList={deleteCurrList}
+							deleteCurrList={deleteListConfirmation}
 						/>
 					</Grid>
 				)}
 			</Grid>
+			{confirmListDelete && (
+				<AlertDialog
+					confirmDeleteList={deleteList}
+					currList={currList.listName}
+				/>
+			)}
 		</Box>
 	);
 }
