@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import ListItem from './ListItem';
 import ListItemAddForm from './ListItemAddForm';
